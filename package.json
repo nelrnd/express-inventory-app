@@ -1,0 +1,19 @@
+{
+  "name": "express-inventory-app",
+  "version": "1.0.0",
+  "description": "An inventory management app written with Express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nelrnd/express-inventory-app.git"
+  },
+  "author": "Nel Renaudin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nelrnd/express-inventory-app/issues"
+  },
+  "homepage": "https://github.com/nelrnd/express-inventory-app#readme"
+}
