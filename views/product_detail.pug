@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1=title
+
+  p #[strong $#{product.price}]
+
+  p=product.description
+
+  p #{product.number_in_stock + " " + (product.number_in_stock > 1 ? "items" : "item")} left in stock.

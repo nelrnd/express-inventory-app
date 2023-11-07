@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-const { serializeName } = require("../utils")
 
 const Schema = mongoose.Schema
 
@@ -13,7 +12,7 @@ const ProductSchema = new Schema({
 })
 
 ProductSchema.virtual("url").get(function () {
-  return `/product/${serializeName(this.name)}`
+  return `/product/${this._id}`
 })
 
 module.exports = mongoose.model("Product", ProductSchema)
