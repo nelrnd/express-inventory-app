@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const mongoose = require("mongoose")
+const indexRouter = require("./routes/index")
 
 const app = express()
 
@@ -12,8 +13,9 @@ mongoose.connect(mongoDB).catch((err) => console.error(err))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.get("/", (req, res) => {
-  res.send("Hello World!")
-})
+app.set("views", "./views")
+app.set("view engine", "pug")
+
+app.use("/", indexRouter)
 
 app.listen(3000)
