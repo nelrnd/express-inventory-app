@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1=title
+
+  p=category.description
+
+  if category_product_list.length
+    ul
+      for product in category_product_list
+        li
+          a(href=product.url) #{product.name}
+          |  - $#{product.price}
+
+  else
+    p No product in this category yet.
