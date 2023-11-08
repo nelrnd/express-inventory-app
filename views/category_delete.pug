@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1=title
+
+  if category_product_list.length > 0
+    p #[strong You need to delete the following products before attempting to delete this category:]
+
+    ul
+      for product in category_product_list
+        li
+          a(href=product.url) #{product.name}
+
+  else
+    p Do you really want to delete this category?
+
+    form(action="", method="POST")
+      input(type="hidden", name="category_id", value=category._id)
+      button(type="submit") Delete
