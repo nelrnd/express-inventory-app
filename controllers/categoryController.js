@@ -6,6 +6,18 @@ const { body, validationResult } = require("express-validator")
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find().exec()
 
+  const promises = []
+
+  allCategories.forEach((category) => {
+    promises.push(Product.countDocuments({ category: category }).exec())
+  })
+
+  const counts = await Promise.all(promises)
+
+  allCategories.forEach(
+    (category, id) => (category.number_of_product = counts[id])
+  )
+
   res.render("category_list", {
     title: "All categories",
     category_list: allCategories,
