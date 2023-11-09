@@ -4,7 +4,9 @@ const asyncHandler = require("express-async-handler")
 const { body, validationResult } = require("express-validator")
 
 exports.product_detail = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id).exec()
+  const product = await Product.findById(req.params.id)
+    .populate("category")
+    .exec()
 
   res.render("product_detail", { title: product.name, product: product })
 })
@@ -35,11 +37,7 @@ exports.product_create_post = [
     .isLength({ min: 10 })
     .withMessage("If specified, description must be longer than 10 characters")
     .escape(),
-  body("image_url")
-    .trim()
-    .isURL()
-    .withMessage("Image URL must be a valid URL")
-    .escape(),
+  body("image_url").trim().isURL().withMessage("Image URL must be a valid URL"),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
@@ -109,11 +107,7 @@ exports.product_update_post = [
     .isLength({ min: 10 })
     .withMessage("If specified, description must be longer than 10 characters")
     .escape(),
-  body("image_url")
-    .trim()
-    .isURL()
-    .withMessage("Image URL must be a valid URL")
-    .escape(),
+  body("image_url").trim().isURL().withMessage("Image URL must be a valid URL"),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)

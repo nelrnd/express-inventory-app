@@ -1,13 +1,20 @@
 extends layout
 
 block content
+  ol(class="mb-2 flex gap-2")
+    li(class="after:content-['>'] after:ml-2")
+      a(href="/" class="text-gray-600 hover:underline") All categories
+    li(class="after:content-['>'] after:ml-2")
+      a(href=product.category.url class="text-gray-600 hover:underline") #{product.category.name}
+    li #{product.name}
+
   h1.heading=title
 
   p #[strong $#{product.price}]
 
   p=product.description
 
-  p #{product.number_in_stock + " " + (product.number_in_stock > 1 ? "items" : "item")} left in stock.
+  p(class="px-4 py-2 rounded-lg max-w-fit bg-yellow-50 text-yellow-600") #{product.number_in_stock + " " + (product.number_in_stock > 1 ? "items" : "item")} left in stock.
 
   hr
 

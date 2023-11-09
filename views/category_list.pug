@@ -6,7 +6,7 @@ block content
   for category in category_list
     a(href=category.url class="block p-6 rounded-xl shadow border border-gray-300 mb-6 hover:bg-gray-100")
       h3(class="text-2xl font-medium") #{category.name}
-      p(class="text-gray-600") #{category.number_of_product + " " + (category.number_of_product > 1 ? "products" : "product")}
+      p #{category.number_of_product + " " + (category.number_of_product > 1 ? "products" : "product")}
   else
     p No category added yet. 
       a(href="/category/create") Create a new category
