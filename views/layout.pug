@@ -6,13 +6,16 @@ html(lang="en")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     link(rel="stylesheet", href="/styles/output.css")
   body
-    nav
-      ul
+    nav(class="bg-blue-950 text-white px-8 py-6 flex justify-between align-middle")
+      a(href="/")
+        h3(class="text-xl font-bold") InventoryApp
+
+      ul(class="flex space-x-4 align-middle")
         li
-          a(href="/") View all categories
+          a(href="/" class="block p-2 rounded hover:bg-blue-900") Browse categories
         li
-          a(href="/category/create") Create new category
+          a(href="/category/create" class="block p-2 rounded hover:bg-blue-900") Create category
         li
-          a(href="/product/create") Create new product
-    main
+          a(href="/product/create" class="block p-2 rounded hover:bg-blue-900") Create product
+    main(class="max-w-screen-lg mx-auto py-6")
       block content
