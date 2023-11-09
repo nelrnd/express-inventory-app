@@ -56,7 +56,7 @@ exports.category_create_post = [
     .isURL()
     .withMessage("Image URL must be a valid URL")
     .escape(),
-  // Process the request
+  // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
 
@@ -116,7 +116,7 @@ exports.category_update_post = [
     .isURL()
     .withMessage("Image URL must be a valid URL")
     .escape(),
-  // Process the request
+  // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
 

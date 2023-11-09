@@ -8,3 +8,10 @@ block content
   p=product.description
 
   p #{product.number_in_stock + " " + (product.number_in_stock > 1 ? "items" : "item")} left in stock.
+
+  hr
+
+  p
+    a(href=product.url + "/update") Update
+  p
+    a(href=product.url + "/delete") Delete

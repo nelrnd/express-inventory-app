@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1=title
+
+  form(action="", method="POST")
+    div
+      label(for="name") Name
+      input(type="text", id="name", name="name", required="true", value=product?product.name:"")
+    div
+      label(for="price") Price (in $)
+      input(type="number", id="price", name="price", required="true", min="0", value=product?product.price:"")
+    div
+      label(for="description") Description
+      textarea(id="description", name="description", required="true")
+        | #{product?product.description:""}
+    div
+      label(for="nb_in_stock") Number of items in stock
+      input(type="number", id="nb_in_stock", name="number_in_stock", required="true", min="0", value=product?product.number_in_stock:"")
+    div
+      label(for="image_url") Image URL
+      input(type="url", id="image_url", name="image_url", value=product?product.image_url:"")
+    div
+      label(for="category") Category
+      select(id="category", name="category", required="true")
+        for category in category_list
+          option(value=category._id) #{category.name}
+    button(type="submit") Submit
+
+    if errors
+      ul
+        for error in errors
+          li #{error.msg}
+
+        
