@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .heading {
+    @apply text-4xl font-bold tracking-tight mb-4;
+  }
+
+  .btn-primary {
+    @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700;
+  }
+
+  .form-label {
+    @apply block mb-1;
+  }
+
+  .form-control {
+    @apply bg-gray-200 p-2 rounded resize-none w-96;
+  }
+}

@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1=title
+  h1.heading=title
 
   if category_product_list.length > 0
     p #[strong You need to delete the following products before attempting to delete this category:]
@@ -16,4 +16,4 @@ block content
 
     form(action="", method="POST")
       input(type="hidden", name="category_id", value=category._id)
-      button(type="submit") Delete
+      button.btn-primary(type="submit") Delete
