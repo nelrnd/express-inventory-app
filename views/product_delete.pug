@@ -3,7 +3,7 @@ extends layout
 block content
   h1.heading=title
 
-  p Do you really want to delete this product?
+  p(class="mb-4") Do you really want to delete this product?
   
   form(action="", method="POST")
     input(type="hidden", name="product_id", value=product._id)
