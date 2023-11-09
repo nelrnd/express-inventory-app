@@ -1,23 +1,24 @@
 extends layout
 
 block content
-  h1.heading=title
 
-  p=category.description
+  div(class="flex justify-between items-center mb-4")
+    div
+      h1.heading(class="mb-1") #{title}
+      p(class="text-gray-600") #{category_product_list.length + " " + (category_product_list.length > 1 ? "products" : "product")}
+    div(class="flex space-x-4")
+      p
+        a.btn-ghost(href=category.url + "/update") Update
+      p
+        a.btn-ghost(href=category.url + "/delete") Delete
 
+  p(class="mb-4")=category.description
+  
   if category_product_list.length
-    ul
+    div(class="grid grid-cols-2 gap-6 mt-8")
       for product in category_product_list
-        li
-          a(href=product.url) #{product.name}
-          |  - $#{product.price}
-
+        a(href=product.url class="block p-6 rounded-xl shadow border border-gray-300 mb-6 hover:bg-gray-100")
+          h3(class="text-2xl font-medium") #{product.name}
+          p(class="text-gray-600") $#{product.price}
   else
     p No product in this category yet.
-
-  hr
-
-  p
-    a(href=category.url + "/update") Update category
-  p
-    a(href=category.url + "/delete") Delete category

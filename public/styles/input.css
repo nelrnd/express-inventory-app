@@ -11,6 +11,10 @@
     @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700;
   }
 
+  .btn-ghost {
+    @apply text-gray-600 py-2 px-4 rounded hover:text-black hover:bg-gray-200;
+  }
+
   .form-label {
     @apply block max-w-fit mb-1;
   }

@@ -4,7 +4,8 @@
   "description": "An inventory management app written with Express",
   "main": "app.js",
   "scripts": {
-    "devstart": "nodemon app"
+    "devstart": "nodemon app",
+    "tailwind": "npx tailwindcss -i ./public/styles/input.css -o ./public/styles/output.css --watch"
   },
   "repository": {
     "type": "git",

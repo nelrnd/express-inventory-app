@@ -12,7 +12,7 @@ block content
           a(href=product.url) #{product.name}
 
   else
-    p Do you really want to delete this category?
+    p(class="mb-4") Do you really want to delete this category?
 
     form(action="", method="POST")
       input(type="hidden", name="category_id", value=category._id)
