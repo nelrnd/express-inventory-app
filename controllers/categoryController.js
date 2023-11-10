@@ -62,12 +62,6 @@ exports.category_create_post = [
     .isLength({ min: 10 })
     .withMessage("If specified, description must be longer than 10 characters")
     .escape(),
-  body("image_url")
-    .trim()
-    .optional({ values: "falsy" })
-    .isURL()
-    .withMessage("Image URL must be a valid URL")
-    .escape(),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
@@ -75,7 +69,6 @@ exports.category_create_post = [
     const category = new Category({
       name: req.body.name,
       description: req.body.description,
-      image_url: req.body.image_url,
     })
 
     if (!errors.isEmpty()) {
@@ -122,12 +115,6 @@ exports.category_update_post = [
     .isLength({ min: 10 })
     .withMessage("If specified, description must be longer than 10 characters")
     .escape(),
-  body("image_url")
-    .trim()
-    .optional({ values: "falsy" })
-    .isURL()
-    .withMessage("Image URL must be a valid URL")
-    .escape(),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
@@ -136,7 +123,6 @@ exports.category_update_post = [
       _id: req.params.id,
       name: req.body.name,
       description: req.body.description,
-      image_url: req.body.image_url,
     })
 
     if (!errors.isEmpty()) {

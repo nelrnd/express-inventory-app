@@ -11,9 +11,6 @@ block content
       label.form-label(for="description") Description
       textarea.form-control(id="description", name="description", class="resize-none h-32")
         | #{category?category.description:""}
-    div.mb-4
-      label.form-label(for="image_url") Image URL
-      input.form-control(type="url", id="image_url", name="image_url", value=category?category.image_url:"")
     button.btn-primary(type="submit" class="mb-4") Submit
 
     if errors
