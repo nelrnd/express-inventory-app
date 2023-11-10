@@ -13,7 +13,7 @@ block content
 
     div
       h1.heading(class="mb-1")=title
-      p(class="mb-4") #[strong $#{product.price}]
+      p(class="mb-4")=product.formated_price
       p(class="mb-4")=product.description
       p(class=`mb-4 px-4 py-2 rounded-lg max-w-fit ${product.number_in_stock > 10 ? "bg-green-50 text-green-600" : product.number_in_stock > 0 ? "bg-yellow-50 text-yellow-600" : "bg-red-50 text-red-600"}`) #{product.number_in_stock + " " + (product.number_in_stock > 1 ? "items" : "item")} left in stock.
 

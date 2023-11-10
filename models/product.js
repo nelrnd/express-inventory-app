@@ -15,4 +15,19 @@ ProductSchema.virtual("url").get(function () {
   return `/product/${this._id}`
 })
 
+ProductSchema.virtual("formated_price").get(function () {
+  return (
+    "$" +
+    this.price
+      .toString()
+      .split("")
+      .reverse()
+      .map((d, id, arr) =>
+        (id + 1) % 3 || id === arr.length - 1 ? d : "," + d
+      )
+      .reverse()
+      .join("")
+  )
+})
+
 module.exports = mongoose.model("Product", ProductSchema)
