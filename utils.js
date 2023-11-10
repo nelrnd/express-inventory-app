@@ -1,10 +1,12 @@
-exports.serializeName = function (name) {
-  return name
-    .toLowerCase()
-    .replace(/\//g, "")
-    .split("")
-    .filter((char, id, arr) => char !== " " || arr[id - 1] !== " ")
-    .join("")
-    .split(" ")
-    .join("-")
+exports.formatPrice = function (price) {
+  return (
+    "$" +
+    price
+      .toString()
+      .split("")
+      .reverse()
+      .map((d, id, arr) => ((id + 1) % 3 || id === arr.length - 1 ? d : "," + d))
+      .reverse()
+      .join("")
+  )
 }

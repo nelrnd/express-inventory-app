@@ -4,6 +4,7 @@ block content
   h1.heading=title
 
   form(action="", method="POST")
+    input(type="hidden", name="id", value=product?product._id:"")
     div.mb-4
       label.form-label(for="name") Name
       input.form-control(type="text", id="name", name="name", required="true", value=product?product.name:"")

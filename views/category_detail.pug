@@ -19,7 +19,7 @@ block content
       for product in category_product_list
         a(href=product.url class="block p-4 rounded-xl shadow border border-gray-300 mb-6 hover:bg-gray-100")
           div(class="mb-4")
-            img(src=(product.image_url||"/images/image_default.jpg") alt="" class="block aspect-[3/2] object-cover rounded")
+            img(src=(product.image_url||"/images/image_default.jpg") alt="" class="block aspect-[3/2] object-cover rounded w-full")
           h3(class="text-2xl font-medium") #{product.name}
           p=product.formated_price
   else

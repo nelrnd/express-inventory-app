@@ -8,6 +8,6 @@ block content
       h3(class="text-2xl font-medium") #{category.name}
       p #{category.number_of_product + " " + (category.number_of_product > 1 ? "products" : "product")}
   else
-    p No category added yet. 
-      a(href="/category/create") Create a new category
-      | .
+    p(class="mb-4") No category added yet.
+
+    a.btn-primary(href="/category/create") Create a new category

@@ -2,9 +2,11 @@ const Product = require("../models/product")
 const Category = require("../models/category")
 const asyncHandler = require("express-async-handler")
 const { body, validationResult } = require("express-validator")
+const { default: slugify } = require("slugify")
 
 exports.product_detail = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id)
+  // Get the product
+  const product = await Product.findOne({ slug: req.params.slug })
     .populate("category")
     .exec()
 
@@ -27,15 +29,28 @@ exports.product_create_post = [
   // Validate and sanitize fields
   body("name")
     .trim()
-    .isLength({ min: 1 })
-    .withMessage("Name must be specified.")
     .isLength({ min: 3 })
-    .withMessage("Name must be at least 3 characters.")
+    .withMessage("Name is required and must must at least 3 characters.")
+    .custom(async (value) => {
+      const slug = slugify(value)
+      if (slug.length < 3) {
+        return Promise.reject()
+      }
+    })
+    .withMessage("Name must contain at least 3 alphabetical characters.")
+    .custom(async (value) => {
+      const slug = slugify(value, { lower: true })
+      let slugExists = await Product.exists({ slug }).exec()
+      if (slugExists) {
+        return Promise.reject()
+      }
+    })
+    .withMessage("Name must be unique but is already used by another product.")
     .escape(),
   body("description")
     .trim()
     .isLength({ min: 10 })
-    .withMessage("If specified, description must be longer than 10 characters")
+    .withMessage("If specified, description must be at least 10 characters")
     .escape(),
   body("image_url")
     .trim()
@@ -48,6 +63,7 @@ exports.product_create_post = [
 
     const product = new Product({
       name: req.body.name,
+      slug: slugify(req.body.name, { lower: true }),
       price: req.body.price,
       description: req.body.description,
       number_in_stock: req.body.number_in_stock,
@@ -61,13 +77,12 @@ exports.product_create_post = [
         .sort({ name: 1 })
         .exec()
 
-      res.render("product_form", {
+      return res.render("product_form", {
         title: "Create new product",
-        product: product,
+        product,
         category_list: allCategories,
         errors: errors.array(),
       })
-      return
     }
 
     await product.save()
@@ -77,7 +92,7 @@ exports.product_create_post = [
 
 exports.product_update_get = asyncHandler(async (req, res, next) => {
   const [product, allCategories] = await Promise.all([
-    Product.findById(req.params.id).exec(),
+    Product.findOne({ slug: req.params.slug }).exec(),
     Category.find({}, "name")
       .collation({ locale: "en", strength: 2 })
       .sort({ name: 1 })
@@ -92,7 +107,7 @@ exports.product_update_get = asyncHandler(async (req, res, next) => {
 
   res.render("product_form", {
     title: `Update product: ${product.name}`,
-    product: product,
+    product,
     category_list: allCategories,
   })
 })
@@ -101,15 +116,31 @@ exports.product_update_post = [
   // Validate and sanitize fields
   body("name")
     .trim()
-    .isLength({ min: 1 })
-    .withMessage("Name must be specified.")
     .isLength({ min: 3 })
-    .withMessage("Name must be at least 3 characters.")
+    .withMessage("Name is required and must must at least 3 characters.")
+    .custom(async (value) => {
+      const slug = slugify(value)
+      if (slug.length < 3) {
+        return Promise.reject()
+      }
+    })
+    .withMessage("Name must contain at least 3 alphabetical characters.")
+    .custom(async (value, { req }) => {
+      const slug = slugify(value, { lower: true })
+      let slugExists = await Product.exists({
+        slug,
+        _id: { $ne: req.body.id },
+      }).exec()
+      if (slugExists) {
+        return Promise.reject()
+      }
+    })
+    .withMessage("Name must be unique but is already used by another product.")
     .escape(),
   body("description")
     .trim()
     .isLength({ min: 10 })
-    .withMessage("If specified, description must be longer than 10 characters")
+    .withMessage("If specified, description must be at least 10 characters")
     .escape(),
   body("image_url")
     .trim()
@@ -121,8 +152,9 @@ exports.product_update_post = [
     const errors = validationResult(req)
 
     const product = new Product({
-      _id: req.params.id,
+      _id: req.body.id,
       name: req.body.name,
+      slug: slugify(req.body.name, { lower: true }),
       price: req.body.price,
       description: req.body.description,
       number_in_stock: req.body.number_in_stock,
@@ -136,25 +168,21 @@ exports.product_update_post = [
         .sort({ name: 1 })
         .exec()
 
-      res.render("product_form", {
+      return res.render("product_form", {
         title: `Update product: ${product.name}`,
-        product: product,
+        product,
         category_list: allCategories,
         errors: errors.array(),
       })
-      return
     }
 
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      product
-    )
-    res.redirect(updatedProduct.url)
+    await Product.findByIdAndUpdate(req.body.id, product)
+    res.redirect(product.url)
   }),
 ]
 
 exports.product_delete_get = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findOne({ slug: req.params.slug }).exec()
 
   if (product === null) {
     res.redirect("/")
@@ -162,15 +190,15 @@ exports.product_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("product_delete", {
     title: `Delete product: ${product.name}`,
-    product: product,
+    product,
   })
 })
 
 exports.product_delete_post = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id, "category")
+  const product = await Product.findById(req.body.id, "category")
     .populate("category")
     .exec()
   const categoryUrl = product.category.url
-  await Product.findByIdAndDelete(req.params.id)
+  await Product.findByIdAndDelete(req.body.id)
   res.redirect(categoryUrl)
 })

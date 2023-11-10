@@ -4,16 +4,16 @@ block content
   h1.heading=title
 
   if category_product_list.length > 0
-    p #[strong You need to delete the following products before attempting to delete this category:]
+    p(class="mb-2") #[strong You need to delete the following products before attempting to delete this category:]
 
-    ul
+    ul(class="list-disc pl-6")
       for product in category_product_list
-        li
-          a(href=product.url) #{product.name}
+        li(class="text-gray-600")
+          a(href=product.url class=" hover:underline") #{product.name}
 
   else
     p(class="mb-4") Do you really want to delete this category?
 
     form(action="", method="POST")
-      input(type="hidden", name="category_id", value=category._id)
+      input(type="hidden", name="id", value=category._id)
       button.btn-primary(type="submit") Delete
