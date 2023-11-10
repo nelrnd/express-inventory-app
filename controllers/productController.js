@@ -37,7 +37,11 @@ exports.product_create_post = [
     .isLength({ min: 10 })
     .withMessage("If specified, description must be longer than 10 characters")
     .escape(),
-  body("image_url").trim().isURL().withMessage("Image URL must be a valid URL"),
+  body("image_url")
+    .trim()
+    .isURL()
+    .withMessage("Image URL must be a valid URL")
+    .optional({ values: "falsy" }),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
@@ -107,7 +111,11 @@ exports.product_update_post = [
     .isLength({ min: 10 })
     .withMessage("If specified, description must be longer than 10 characters")
     .escape(),
-  body("image_url").trim().isURL().withMessage("Image URL must be a valid URL"),
+  body("image_url")
+    .trim()
+    .isURL()
+    .withMessage("Image URL must be a valid URL")
+    .optional({ values: "falsy" }),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)

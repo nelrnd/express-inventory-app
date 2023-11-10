@@ -647,6 +647,10 @@ p {
   height: 10rem;
 }
 
+.w-full {
+  width: 100%;
+}
+
 .max-w-fit {
   max-width: -moz-fit-content;
   max-width: fit-content;
