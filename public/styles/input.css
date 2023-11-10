@@ -6,6 +6,7 @@
   p {
     @apply text-gray-600;
   }
+
   .heading {
     @apply text-4xl font-bold tracking-tight mb-4;
   }
@@ -23,6 +24,6 @@
   }
 
   .form-control {
-    @apply bg-gray-200 p-2 rounded resize-none w-96;
+    @apply bg-gray-200 p-2 rounded w-96;
   }
 }

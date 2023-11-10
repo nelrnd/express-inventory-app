@@ -591,7 +591,6 @@ p {
 
 .form-control {
   width: 24rem;
-  resize: none;
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
@@ -623,6 +622,10 @@ p {
   margin-top: 2rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .block {
   display: block;
 }
@@ -643,8 +646,8 @@ p {
   aspect-ratio: 3/2;
 }
 
-.h-40 {
-  height: 10rem;
+.h-32 {
+  height: 8rem;
 }
 
 .w-full {
@@ -658,6 +661,10 @@ p {
 
 .max-w-screen-lg {
   max-width: 1024px;
+}
+
+.resize-none {
+  resize: none;
 }
 
 .grid-cols-2 {
@@ -733,6 +740,11 @@ p {
 .bg-yellow-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 252 232 / var(--tw-bg-opacity));
+}
+
+.bg-red-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity));
 }
 
 .object-cover {

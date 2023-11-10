@@ -12,7 +12,7 @@ block content
       input.form-control(type="number", id="price", name="price", required="true", min="0", value=product?product.price:"")
     div.mb-4
       label.form-label(for="description") Description
-      textarea.form-control(id="description", name="description", required="true")
+      textarea.form-control(id="description", name="description", class="resize-none h-32")
         | #{product?product.description:""}
     div.mb-4
       label.form-label(for="nb_in_stock") Number of items in stock
@@ -28,11 +28,11 @@ block content
             option(value=category._id, selected=product.category.toString()===category._id.toString()?"selected":false) #{category.name}
           else
             option(value=category._id) #{category.name}
-    button.btn-primary(type="submit") Submit
+    button.btn-primary(type="submit" class="mb-4") Submit
 
     if errors
       ul
         for error in errors
-          li #{error.msg}
+          li(class="py-2 px-4 rounded-xl bg-red-100 text-red-600 mb-2 max-w-fit") #{error.msg}
 
         
