@@ -2,7 +2,9 @@ const Product = require("../models/product")
 const Category = require("../models/category")
 const asyncHandler = require("express-async-handler")
 const { body, validationResult } = require("express-validator")
-const { default: slugify } = require("slugify")
+const slugify = require("slugify")
+const multer = require("multer")
+const upload = multer({ dest: "uploads/" })
 
 exports.product_detail = asyncHandler(async (req, res, next) => {
   // Get the product
@@ -26,6 +28,8 @@ exports.product_create_get = asyncHandler(async (req, res, next) => {
 })
 
 exports.product_create_post = [
+  // Save photo
+  upload.single("photo"),
   // Validate and sanitize fields
   body("name")
     .trim()
@@ -50,7 +54,7 @@ exports.product_create_post = [
   body("description")
     .trim()
     .isLength({ min: 10 })
-    .withMessage("If specified, description must be at least 10 characters")
+    .withMessage("Description must be at least 10 characters")
     .escape(),
   body("image_url")
     .trim()
@@ -68,7 +72,7 @@ exports.product_create_post = [
       description: req.body.description,
       number_in_stock: req.body.number_in_stock,
       category: req.body.category,
-      image_url: req.body.image_url,
+      image_url: req.file ? "/" + req.file.path : "",
     })
 
     if (!errors.isEmpty()) {
@@ -113,6 +117,8 @@ exports.product_update_get = asyncHandler(async (req, res, next) => {
 })
 
 exports.product_update_post = [
+  // Save photo
+  upload.single("photo"),
   // Validate and sanitize fields
   body("name")
     .trim()
@@ -140,7 +146,7 @@ exports.product_update_post = [
   body("description")
     .trim()
     .isLength({ min: 10 })
-    .withMessage("If specified, description must be at least 10 characters")
+    .withMessage("Description must be at least 10 characters")
     .escape(),
   body("image_url")
     .trim()
@@ -151,6 +157,8 @@ exports.product_update_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
 
+    console.log(req.body)
+
     const product = new Product({
       _id: req.body.id,
       name: req.body.name,
@@ -158,7 +166,7 @@ exports.product_update_post = [
       price: req.body.price,
       description: req.body.description,
       number_in_stock: req.body.number_in_stock,
-      image_url: req.body.image_url,
+      image_url: req.file ? "/" + req.file.path : "",
       category: req.body.category,
     })
 
@@ -168,7 +176,7 @@ exports.product_update_post = [
         .sort({ name: 1 })
         .exec()
 
-      return res.render("product_form", {
+      res.render("product_form", {
         title: `Update product: ${product.name}`,
         product,
         category_list: allCategories,
