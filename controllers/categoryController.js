@@ -3,6 +3,7 @@ const Product = require("../models/product")
 const asyncHandler = require("express-async-handler")
 const { body, validationResult } = require("express-validator")
 const slugify = require("slugify")
+const { protected_route } = require("./privateController")
 
 exports.category_list = asyncHandler(async (req, res, next) => {
   // Get all categories
@@ -100,21 +101,24 @@ exports.category_create_post = [
   }),
 ]
 
-exports.category_update_get = asyncHandler(async (req, res, next) => {
-  // Get the category
-  const category = await Category.findOne({ slug: req.params.slug }).exec()
+exports.category_update_get = [
+  protected_route,
+  asyncHandler(async (req, res, next) => {
+    // Get the category
+    const category = await Category.findOne({ slug: req.params.slug }).exec()
 
-  if (category === null) {
-    const err = new Error("Category not found")
-    err.status = 404
-    return next(err)
-  }
+    if (category === null) {
+      const err = new Error("Category not found")
+      err.status = 404
+      return next(err)
+    }
 
-  res.render("category_form", {
-    title: `Update category: ${category.name}`,
-    category,
-  })
-})
+    res.render("category_form", {
+      title: `Update category: ${category.name}`,
+      category,
+    })
+  }),
+]
 
 exports.category_update_post = [
   // Validate and sanitize fields
@@ -171,22 +175,28 @@ exports.category_update_post = [
   }),
 ]
 
-exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  // Get category and products from that category
-  const category = await Category.findOne({ slug: req.params.slug }).exec()
-  const categoryProducts = await Product.find({ category }, "name slug").exec()
+exports.category_delete_get = [
+  protected_route,
+  asyncHandler(async (req, res, next) => {
+    // Get category and products from that category
+    const category = await Category.findOne({ slug: req.params.slug }).exec()
+    const categoryProducts = await Product.find(
+      { category },
+      "name slug"
+    ).exec()
 
-  // If category don't exist, redirect to home page
-  if (category === null) {
-    return res.redirect("/")
-  }
+    // If category don't exist, redirect to home page
+    if (category === null) {
+      return res.redirect("/")
+    }
 
-  res.render("category_delete", {
-    title: `Delete category: ${category.name}`,
-    category,
-    category_product_list: categoryProducts,
-  })
-})
+    res.render("category_delete", {
+      title: `Delete category: ${category.name}`,
+      category,
+      category_product_list: categoryProducts,
+    })
+  }),
+]
 
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
   // Get category and products from that category

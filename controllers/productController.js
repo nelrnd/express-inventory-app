@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler")
 const { body, validationResult } = require("express-validator")
 const slugify = require("slugify")
 const multer = require("multer")
+const { protected_route } = require("./privateController")
 const upload = multer({ dest: "uploads/" })
 
 exports.product_detail = asyncHandler(async (req, res, next) => {
@@ -89,27 +90,30 @@ exports.product_create_post = [
   }),
 ]
 
-exports.product_update_get = asyncHandler(async (req, res, next) => {
-  const [product, allCategories] = await Promise.all([
-    Product.findOne({ slug: req.params.slug }).exec(),
-    Category.find({}, "name")
-      .collation({ locale: "en", strength: 2 })
-      .sort({ name: 1 })
-      .exec(),
-  ])
+exports.product_update_get = [
+  protected_route,
+  asyncHandler(async (req, res, next) => {
+    const [product, allCategories] = await Promise.all([
+      Product.findOne({ slug: req.params.slug }).exec(),
+      Category.find({}, "name")
+        .collation({ locale: "en", strength: 2 })
+        .sort({ name: 1 })
+        .exec(),
+    ])
 
-  if (product === null) {
-    const err = new Error("Product not found")
-    err.status = 404
-    return next(err)
-  }
+    if (product === null) {
+      const err = new Error("Product not found")
+      err.status = 404
+      return next(err)
+    }
 
-  res.render("product_form", {
-    title: `Update product: ${product.name}`,
-    product,
-    category_list: allCategories,
-  })
-})
+    res.render("product_form", {
+      title: `Update product: ${product.name}`,
+      product,
+      category_list: allCategories,
+    })
+  }),
+]
 
 exports.product_update_post = [
   // Save photo
@@ -181,18 +185,21 @@ exports.product_update_post = [
   }),
 ]
 
-exports.product_delete_get = asyncHandler(async (req, res, next) => {
-  const product = await Product.findOne({ slug: req.params.slug }).exec()
+exports.product_delete_get = [
+  protected_route,
+  asyncHandler(async (req, res, next) => {
+    const product = await Product.findOne({ slug: req.params.slug }).exec()
 
-  if (product === null) {
-    res.redirect("/")
-  }
+    if (product === null) {
+      res.redirect("/")
+    }
 
-  res.render("product_delete", {
-    title: `Delete product: ${product.name}`,
-    product,
-  })
-})
+    res.render("product_delete", {
+      title: `Delete product: ${product.name}`,
+      product,
+    })
+  }),
+]
 
 exports.product_delete_post = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.body.id, "category")

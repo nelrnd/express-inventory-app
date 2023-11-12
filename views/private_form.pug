@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div(class="absolute inset-0 bg-gray-700 grid place-items-center")
+    div(class="max-w-2xl bg-white rounded-xl p-4")
+      h1.heading Enter password
+      p.mb-4 This is a private action, so you need the password to do it.
+
+      form(action="" method="GET")
+        div.mb-4
+          label.form-label(for="pwd") Password:
+          input.form-control(type="password" id="pwd" name="password" required="true")
+        button.btn-primary(type="submit") Confirm
+
+      if errors
+        ul
+          for error in errors
+            li(class="py-2 px-4 rounded-xl bg-red-100 text-red-600 mb-2 max-w-fit") #{error.msg}

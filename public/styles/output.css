@@ -597,6 +597,14 @@ p {
   padding: 0.5rem;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  inset: 0px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -671,6 +679,10 @@ p {
   max-width: 1024px;
 }
 
+.max-w-2xl {
+  max-width: 42rem;
+}
+
 .resize-none {
   resize: none;
 }
@@ -685,6 +697,10 @@ p {
 
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.place-items-center {
+  place-items: center;
 }
 
 .items-center {
@@ -763,6 +779,16 @@ p {
 .bg-yellow-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 252 232 / var(--tw-bg-opacity));
+}
+
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .object-cover {
