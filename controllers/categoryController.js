@@ -29,7 +29,7 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
   // Get products from that category
   const categoryProducts = await Product.find(
     { category: category },
-    "name slug price image_url"
+    "name slug price photo_url"
   ).exec()
 
   if (category === null) {

@@ -56,11 +56,6 @@ exports.product_create_post = [
     .isLength({ min: 10 })
     .withMessage("Description must be at least 10 characters")
     .escape(),
-  body("image_url")
-    .trim()
-    .isURL()
-    .withMessage("Image URL must be a valid URL")
-    .optional({ values: "falsy" }),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
@@ -72,7 +67,7 @@ exports.product_create_post = [
       description: req.body.description,
       number_in_stock: req.body.number_in_stock,
       category: req.body.category,
-      image_url: req.file ? "/" + req.file.path : "",
+      photo_url: req.file ? "/" + req.file.path : "",
     })
 
     if (!errors.isEmpty()) {
@@ -148,16 +143,9 @@ exports.product_update_post = [
     .isLength({ min: 10 })
     .withMessage("Description must be at least 10 characters")
     .escape(),
-  body("image_url")
-    .trim()
-    .isURL()
-    .withMessage("Image URL must be a valid URL")
-    .optional({ values: "falsy" }),
   // Handle the request
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req)
-
-    console.log(req.body)
 
     const product = new Product({
       _id: req.body.id,
@@ -166,9 +154,13 @@ exports.product_update_post = [
       price: req.body.price,
       description: req.body.description,
       number_in_stock: req.body.number_in_stock,
-      image_url: req.file ? "/" + req.file.path : "",
+      photo_url: req.file ? "/" + req.file.path : req.body.photo_url,
       category: req.body.category,
     })
+
+    if (req.body.delete_photo) {
+      product.photo_url = ""
+    }
 
     if (!errors.isEmpty()) {
       const allCategories = await Category.find({}, "name")

@@ -9,7 +9,7 @@ const ProductSchema = new Schema({
   description: { type: String, required: true, minLength: 10 },
   price: { type: Number, required: true, min: 1 },
   number_in_stock: { type: Number, required: true, min: 0 },
-  image_url: { type: String },
+  photo_url: { type: String, required: true },
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
 })
 
